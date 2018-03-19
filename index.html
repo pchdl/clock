@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas时钟</title>
+<style>
+*{
+	padding:0;
+	margin:0;
+}
+body{
+	background-color: #000;
+    font-family: microsoft YaHei;
+}
+.title{
+    height: 80px;
+    text-align: center;
+    font-size: 25px;
+    line-height: 80px;
+    color: #aaa;
+}
+canvas{
+	display:block;
+	background-color: #FFF;
+	margin:0 auto;
+}
+</style>
+</head>
+<body>
+<div class="title">Canvas 制作动态时钟</div>
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<script>
+
+var canvas = document.getElementById('canvas'),
+    cxt = canvas.getContext('2d');
+
+    function draw(){
+    	cxt.clearRect(0,0,canvas.width,canvas.height);
+    	var x = 250,
+    	    y = 250,
+    	    r = 150;
+    	var date = new Date();
+    	var hs = date.getHours();
+    	var ms = date.getMinutes();
+    	var ss = date.getSeconds();
+
+    	var hsval = (-90+hs*30+ms/2)*Math.PI/180;
+    	var msval = (-90+ms*6+ss/10)*Math.PI/180;
+    	var ssval = (-90+ss*6)*Math.PI/180;
+    	var fujia = (-270+ss*6)*Math.PI/180;
+
+
+    	//60秒针刻度===
+    	cxt.save();
+    	cxt.beginPath();
+    	for(var i=0;i<60;i++){
+    		cxt.moveTo(x,y);
+    		cxt.arc(x,y,r,i*6*Math.PI/180,(i+1)*6*Math.PI/180,false);
+    	}
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//覆盖层1
+    	cxt.save();
+    	cxt.fillStyle = '#FFF';
+    	cxt.beginPath();
+    	cxt.moveTo(x,y);
+    	cxt.arc(x,y,r*19/20,0,2*Math.PI,false);
+    	cxt.fill();
+    	cxt.restore();
+
+    	//时针刻度
+    	cxt.save();
+    	cxt.lineWidth = 3;
+    	cxt.lineCap = 'round';
+    	cxt.beginPath();
+    	for(var i=0;i<12;i++){
+    		cxt.moveTo(x,y);
+    		cxt.arc(x,y,r,i*30*Math.PI/180,(i+1)*30*Math.PI/180,false);
+    	}
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//覆盖层2
+    	cxt.save();
+    	cxt.fillStyle = '#FFF';
+    	cxt.beginPath();
+    	cxt.moveTo(x,y);
+    	cxt.arc(x,y,r*18/20,0,2*Math.PI,false);
+    	cxt.fill();
+    	cxt.restore();
+
+    	//数字
+    	cxt.save();
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowColor = "#aaa";
+    	cxt.shadowBlur = 3;
+    	cxt.font = '20px Verdana';
+    	cxt.fillText('12',238,135);
+    	cxt.fillText('1',302,152);
+    	cxt.fillText('2',350,195);
+    	cxt.fillText('3',368,258);
+    	cxt.fillText('4',349,320);
+    	cxt.fillText('5',305,362);
+    	cxt.fillText('6',243,380);
+    	cxt.fillText('7',183,362);
+    	cxt.fillText('8',138,320);
+    	cxt.fillText('9',120,258);
+    	cxt.fillText('10',135,195);
+    	cxt.fillText('11',180,152);
+    	cxt.restore();
+
+    	cxt.save();
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowColor = "#aaa";
+    	cxt.shadowBlur = 1;
+    	cxt.font = '15px Verdana';
+    	cxt.fillText('THOOYORK',205,299);
+    	cxt.restore();
+    	cxt.save();
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowColor = "#aaa";
+    	cxt.shadowBlur = 1;
+    	cxt.font = '10px Verdana';
+    	cxt.fillText('Germary',225,315);
+    	cxt.restore();
+
+    	//时针
+    	cxt.save();
+    	cxt.lineWidth = 5;
+    	cxt.lineCap = 'round';
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowColor = "#555";
+    	cxt.shadowBlur = 4;
+    	cxt.beginPath();    	
+		cxt.moveTo(x,y);
+		cxt.arc(x,y,r*10/20,hsval,hsval,false);
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//分针
+    	cxt.save();
+    	cxt.lineWidth = 3;
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowColor = "#777";
+    	cxt.shadowBlur = 4;
+    	cxt.lineCap = 'round';
+    	cxt.beginPath();    	
+		cxt.moveTo(x,y);
+		cxt.arc(x,y,r*15/20,msval,msval,false);
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//秒针
+    	cxt.save();
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowColor = "#aaa";
+    	cxt.shadowBlur = 4;
+    	cxt.lineWidth = 2;
+    	cxt.strokeStyle = "#f3a829";
+    	cxt.beginPath();
+		cxt.moveTo(x,y);
+		cxt.arc(x,y,r*17/20,ssval,ssval,false);
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//秒针附加线
+    	cxt.save();
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowOffsetX = 3;
+    	cxt.shadowColor = "#aaa";
+    	cxt.shadowBlur = 4;
+    	cxt.lineCap = 'round';
+    	cxt.lineWidth = 5;
+    	cxt.strokeStyle = "#f3a829";
+    	cxt.beginPath();
+		cxt.moveTo(x,y);
+		cxt.arc(x,y,r*1.5/20,fujia,fujia,false);
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//覆盖线
+    	cxt.save();
+    	cxt.beginPath();
+    	cxt.strokeStyle="#FFF";
+    	cxt.lineWidth = 2;
+		cxt.arc(x,y,r-2,0,2*Math.PI,false);
+    	cxt.stroke();
+    	cxt.restore();
+
+    	//中心圆点
+    	cxt.save();
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowOffsetX = 1;
+    	cxt.shadowColor = "#ccc";
+    	cxt.shadowBlur = 2;
+    	cxt.lineWidth = 2;
+    	cxt.strokeStyle = "#f3a829";
+    	cxt.fillStyle = '#f3a829';
+    	cxt.beginPath();
+		cxt.arc(x,y,6,0,2*Math.PI,false);
+    	cxt.stroke();
+    	cxt.fill();
+    	cxt.restore();
+
+    	
+
+    }
+    draw();
+    setInterval(draw,1000);
+    
+
+</script>
+</body>
+</html>
